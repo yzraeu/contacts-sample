@@ -19,30 +19,46 @@ namespace ContactsSample.API.Repository
 
         public Contact Get(int id)
         {
-            var contact = base.ConnectionFactory().QueryFirst<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts where id = @id", new { id });
+            var contact = base.ConnectionFactory().QueryFirstOrDefault<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts where id = @id", new { id });
 
             return contact;
         }
 
-        public void Add(Contact entity)
+        public int Add(Contact entity)
         {
-            base.ConnectionFactory().Execute("insert into contacts values(@firstName, @lastName, @dateOfBirth)",
+            var id = base.ConnectionFactory().Query<int>($"insert into contacts(firstName, lastName, dateOfBirth) values(@firstName, @lastName, @dateOfBirth); {selectLastIdSQL}",
                 new
                 {
                     firstName = entity.FirstName,
                     lastName = entity.LastName,
                     dateOfBirth = entity.DateOfBirth,
-                });
+                }).Single();
+
+            return id;
         }
 
-        public void Update(Contact entity)
+        public void Update(int id, Contact entity)
         {
-            throw new NotImplementedException();
+            base.ConnectionFactory().Execute("update contacts set firstName = @firstName, lastName = @lastName, dateOfBirth = @dateOfBirth where id = @id",
+                new
+                {
+                    firstName = entity.FirstName,
+                    lastName = entity.LastName,
+                    dateOfBirth = entity.DateOfBirth,
+                    id
+                });
         }
 
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            base.ConnectionFactory().Execute("delete from contacts where id = @id", new { id });
+        }
+
+        public bool Exists(int id)
+        {
+            var exists = base.ConnectionFactory().QueryFirstOrDefault("select 0 from contacts where id = @id", new { id }) != null;
+
+            return exists;
         }
     }
 }

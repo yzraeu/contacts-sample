@@ -1,4 +1,5 @@
-﻿using ContactsSample.API.Models;
+﻿using ContactsSample.API.Infrastructure.Extensions;
+using ContactsSample.API.Models;
 using ContactsSample.API.Repository;
 using System;
 using System.Collections.Generic;
@@ -18,31 +19,68 @@ namespace ContactsSample.API.Controllers
             this.contactRepository = contactRepository;
         }
 
-        // GET api/values
-        public IEnumerable<Contact> Get()
+        public IHttpActionResult Get()
         {
-            return this.contactRepository.GetAll();
+            return Ok(this.contactRepository.GetAll());
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            var contact = this.contactRepository.Get(id);
+
+            if (contact == null)
+                return NotFound();
+            else
+                return Ok();
         }
 
-        // POST api/values
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody]Contact contact)
         {
+            if (!ModelState.IsValid || !contact.IsValid()) return BadRequest();
+
+            try
+            {
+                var id = this.contactRepository.Add(contact);
+                contact = this.contactRepository.Get(id);
+                return Created(nameof(Get), contact);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, [FromBody]Contact contact)
         {
+            if (!this.contactRepository.Exists(id)) return NotFound();
+
+            if (!ModelState.IsValid || !contact.IsValid()) return BadRequest();
+
+            try
+            {
+                this.contactRepository.Update(id, contact);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
-        // DELETE api/values/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            if (!this.contactRepository.Exists(id)) return NotFound();
+
+            try
+            {
+                this.contactRepository.Remove(id);
+                return this.Accepted();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }

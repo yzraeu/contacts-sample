@@ -5,10 +5,11 @@ namespace ContactsSample.API.Repository
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        void Add(T entity);
-        void Update(T entity);
+        int Add(T entity);
+        void Update(int id, T entity);
         void Remove(int id);
         T Get(int id);
+        bool Exists(int id);
         IEnumerable<T> GetAll();
     }
 }
