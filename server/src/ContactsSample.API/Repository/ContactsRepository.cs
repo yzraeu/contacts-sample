@@ -12,21 +12,21 @@ namespace ContactsSample.API.Repository
     {
         public IEnumerable<Contact> GetAll()
         {
-            var contacts = connection.Query<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts");
+            var contacts = base.ConnectionFactory().Query<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts");
 
             return contacts;
         }
 
         public Contact Get(int id)
         {
-            var contact = connection.QueryFirst<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts where id = @id", new { id });
+            var contact = base.ConnectionFactory().QueryFirst<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts where id = @id", new { id });
 
             return contact;
         }
 
         public void Add(Contact entity)
         {
-            connection.Execute("insert into contacts values(@firstName, @lastName, @dateOfBirth)",
+            base.ConnectionFactory().Execute("insert into contacts values(@firstName, @lastName, @dateOfBirth)",
                 new
                 {
                     firstName = entity.FirstName,
