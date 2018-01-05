@@ -19,13 +19,22 @@ export class ContactsService {
       .catch(this.handleError);
   }
 
-  get(id: number) {}
+  get(id: number): Observable<Contact> {
+    return this.http
+      .get(this._apiUrl + id)
+      .map(d => <Contact>d.json())
+      .catch(this.handleError);
+  }
 
   add(contact: Contact) {}
 
   update(id: number, contact: Contact) {}
 
-  remove(id: number) {}
+  remove(id: number): Observable<Response> {
+    return this.http
+      .delete(this._apiUrl + id)
+      .catch(this.handleError);
+  }
 
   handleError(error: Response) {
     console.error(error);

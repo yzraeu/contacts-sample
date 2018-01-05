@@ -1,3 +1,13 @@
-<p>
-  detail works!
+<p>First Name:
+  <strong>{{ contact.FirstName }}</strong>
 </p>
+<p>Last Name:
+  <strong>{{ contact.LastName }}</strong>
+</p>
+<p>Date of Birth:
+  <strong>{{ contact.DateOfBirth | date }}</strong>
+</p>
+
+<button class="btn btn-light" routerLink="/contacts" role="button">Back</button>
+<button class="btn btn-success" [routerLink]="['/contacts',contact.Id,'edit']" role="button">Edit</button>
+<button class="btn btn-danger" (click)="removeContact(contact.Id)" role="button">Remove</button>
