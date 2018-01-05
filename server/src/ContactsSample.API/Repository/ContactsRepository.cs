@@ -12,7 +12,7 @@ namespace ContactsSample.API.Repository
     {
         public IEnumerable<Contact> GetAll()
         {
-            var contacts = base.ConnectionFactory().Query<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts");
+            var contacts = base.ConnectionFactory().Query<Contact>("select id, firstname, lastname, dateofbirth, addeddate from contacts order by firstname, id");
 
             return contacts;
         }
