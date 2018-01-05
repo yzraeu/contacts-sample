@@ -1,3 +1,37 @@
-<p>
-  list works!
-</p>
+<div *ngIf="contacts">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Birth</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contact of contacts; let i=index">
+        <th scope="row">
+          <a class="" [routerLink]="['/contacts/',contact.Id]">{{ contact.Id }}</a>
+        </th>
+        <td>{{ contact.FirstName }}</td>
+        <td>{{ contact.LastName }}</td>
+        <td>{{ contact.DateOfBirth | date }}</td>
+        <td>
+          <div class="btn-group" role="group" aria-label="Actions">
+            <button type="button" class="btn btn-success" [routerLink]="['/contacts/',contact.Id,'edit']">Edit</button>
+            <button type="button" class="btn btn-danger" (click)="removeContact(contact.Id)">Remove</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-dark" [routerLink]="['/contacts/new']">Add Contact</button>
+</div>
+
+<div class="progress" *ngIf="!contacts" style="height: 40px;">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+    aria-valuemax="100" style="width: 100%;">
+    <h4>Loading...</h4>
+  </div>
+</div>
