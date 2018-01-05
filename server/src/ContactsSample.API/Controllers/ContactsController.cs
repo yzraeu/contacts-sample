@@ -32,7 +32,7 @@ namespace ContactsSample.API.Controllers
             if (contact == null)
                 return NotFound();
             else
-                return Ok();
+                return Ok(contact);
         }
 
         public IHttpActionResult Post([FromBody]Contact contact)
