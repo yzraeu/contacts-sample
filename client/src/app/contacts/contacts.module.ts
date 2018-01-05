@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ContactsService } from './contacts.service';
 
@@ -10,7 +11,7 @@ import { DetailComponent } from './detail/detail.component';
 import { ContactsRoutingModule } from './contacts.routing';
 
 @NgModule({
-  imports: [CommonModule, ContactsRoutingModule],
+  imports: [CommonModule, ContactsRoutingModule, ReactiveFormsModule],
   declarations: [ListComponent, FormComponent, DetailComponent],
   providers: [ContactsService]
 })

@@ -26,14 +26,14 @@ export class ContactsService {
       .catch(this.handleError);
   }
 
-  add(contact: Contact) {}
+  add(contact: Contact): Observable<Response> {
+    return this.http.post(this._apiUrl, contact).catch(this.handleError);
+  }
 
   update(id: number, contact: Contact) {}
 
   remove(id: number): Observable<Response> {
-    return this.http
-      .delete(this._apiUrl + id)
-      .catch(this.handleError);
+    return this.http.delete(this._apiUrl + id).catch(this.handleError);
   }
 
   handleError(error: Response) {
