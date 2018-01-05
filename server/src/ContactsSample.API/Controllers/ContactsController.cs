@@ -11,7 +11,6 @@ using System.Web.Http.Cors;
 
 namespace ContactsSample.API.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ContactsController : ApiController
     {
         private readonly IRepository<Contact> contactRepository;
